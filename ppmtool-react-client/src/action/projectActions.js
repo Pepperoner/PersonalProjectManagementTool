@@ -23,9 +23,14 @@ export const getProjects = () => async dispatch => {
 };
 
 export const getProject = (id, history) => async dispatch => {
-  const res = await axios.get(`http://localhost:9000/api/project/${id}`)
-  dispatch({
-    type: GET_PROJECT,
-    payload: res.data
-  });
+
+  try {
+    const res = await axios.get(`http://localhost:9000/api/project/${id}`)
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data
+    });
+  } catch (error) {
+    history.push("/dashboard");
+  }
 };
