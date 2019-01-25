@@ -25,13 +25,14 @@ public class ProjectTaskService {
 
         Integer backlogSequence = backlog.getPTSequence();
         backlogSequence++;
+        backlog.setPTSequence(backlogSequence);
 
         projectTask.setProjectSequence(projectIdentifier+"-"+backlogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
 
-//        if (projectTask.getPriority() == 0 || projectTask.getPriority() == null){
-//            projectTask.setPriority(3);
-//        }
+        if (projectTask.getPriority() == null){
+            projectTask.setPriority(3);
+        }
 
 //        if (projectTask.getStatus().equals("") || projectTask.getStatus() == null){
 //            projectTask.setStatus("TO-DO");
