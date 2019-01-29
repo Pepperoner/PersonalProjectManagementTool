@@ -60,3 +60,10 @@ export const updateProjectTask = (backlog_id, pt_id, project_task, history) => a
     })
   }
 }
+
+export const cleanErrorsInProjectTask = () => async dispatch => {
+  dispatch({
+    type: GET_ERRORS,
+    payload: {}
+  })
+}
