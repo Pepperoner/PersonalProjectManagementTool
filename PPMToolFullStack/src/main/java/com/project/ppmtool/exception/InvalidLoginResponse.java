@@ -2,20 +2,20 @@ package com.project.ppmtool.exception;
 
 public class InvalidLoginResponse {
 
-    private String username;
+    private String userName;
     private String password;
 
     public InvalidLoginResponse() {
-        this.username = "Invalid Username";
+        this.userName = "Invalid Username";
         this.password = "Invalid Password";
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
