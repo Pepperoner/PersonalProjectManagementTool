@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/project")
@@ -26,18 +27,18 @@ public class ProjectController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal){
         ResponseEntity<?> errorMap = validationErrorService.mapValidationService(result);
         if (errorMap!=null) return errorMap;
 
-        Project project1 = projectService.saveOrUpdateProject(project);
-        return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
+        Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
+        return new ResponseEntity<>(project1, HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<?> getProjectById(@PathVariable String projectId){
         Project project = projectService.findProjectByIdentifier(projectId);
-        return new ResponseEntity<Project>(project,HttpStatus.OK);
+        return new ResponseEntity<>(project,HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -48,6 +49,6 @@ public class ProjectController {
     @DeleteMapping("/{projectId}")
     public ResponseEntity<?> deleteProjectById(@PathVariable String projectId){
         projectService.deleteProjectByIdentifier(projectId);
-        return new ResponseEntity<String>("Project with ID: '"+projectId.toUpperCase()+"' was deleted",HttpStatus.OK);
+        return new ResponseEntity<>("Project with ID: '"+projectId.toUpperCase()+"' was deleted",HttpStatus.OK);
     }
 }
