@@ -18,18 +18,19 @@ public class ProjectTaskService {
     private BacklogRepository backlogRepository;
     private ProjectTaskRepository projectTaskRepository;
     private ProjectRepository projectRepository;
+    private ProjectService projectService;
 
     @Autowired
-    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository, ProjectRepository projectRepository) {
+    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository, ProjectRepository projectRepository, ProjectService projectService) {
         this.backlogRepository = backlogRepository;
         this.projectTaskRepository = projectTaskRepository;
         this.projectRepository = projectRepository;
+        this.projectService = projectService;
     }
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String userName){
 
-        try{
-            Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+            Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, userName).getBacklog();
             projectTask.setBacklog(backlog);
 
             Integer backlogSequence = backlog.getPTSequence();
@@ -47,18 +48,13 @@ public class ProjectTaskService {
 //            projectTask.setStatus("TO-DO");
 //       }
             return projectTaskRepository.save(projectTask);
-        }catch (Exception e){
-            throw new ProjectNotFoundException("Project not Found");
-        }
+
     }
 
 
-    public Iterable<ProjectTask> findBacklogById(String id) {
+    public Iterable<ProjectTask> findBacklogById(String id, String userName) {
 
-        Project project = projectRepository.findByProjectIdentifier(id);
-        if (project==null){
-            throw new ProjectNotFoundException("Project with ID: '"+id+"' does not exist");
-        }
+        projectService.findProjectByIdentifier(id, userName);
 
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
